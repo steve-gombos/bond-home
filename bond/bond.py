@@ -31,6 +31,9 @@ BOND_DEVICE_ACTION_DECREASE_SPEED = "DecreaseSpeed"
 BOND_DEVICE_ACTION_TURN_LIGHT_ON = "TurnLightOn"
 BOND_DEVICE_ACTION_TURN_LIGHT_OFF = "TurnLightOff"
 BOND_DEVICE_ACTION_TOGGLE_LIGHT = "ToggleLight"
+BOND_DEVICE_ACTION_START_DIMMER = "StartDimmer"
+BOND_DEVICE_ACTION_START_UP_LIGHT_DIMMER = "StartUpLightDimmer"
+BOND_DEVICE_ACTION_START_DOWN_LIGHT_DIMMER = "StartDownLightDimmer"
 
 # Relating to Fireplace (FP)
 BOND_DEVICE_ACTION_SET_FLAME = "SetFlame"
@@ -77,19 +80,19 @@ class Bond:
 
     # Relating to Ceiling Fan (CF)
     def setSpeed(self, deviceId, speed=3):
-        return self.doAction(deviceId,
-                             BOND_DEVICE_ACTION_SET_SPEED,
-                             {"argument": speed})
+        return self.doAction(
+            deviceId, BOND_DEVICE_ACTION_SET_SPEED, {"argument": speed}
+        )
 
     def increaseSpeed(self, deviceId, speed=1):
-        return self.doAction(deviceId,
-                             BOND_DEVICE_ACTION_INCREASE_SPEED,
-                             {"argument": speed})
+        return self.doAction(
+            deviceId, BOND_DEVICE_ACTION_INCREASE_SPEED, {"argument": speed}
+        )
 
     def decreaseSpeed(self, deviceId, speed=1):
-        return self.doAction(deviceId,
-                             BOND_DEVICE_ACTION_DECREASE_SPEED,
-                             {"argument": speed})
+        return self.doAction(
+            deviceId, BOND_DEVICE_ACTION_DECREASE_SPEED, {"argument": speed}
+        )
 
     def turnLightOn(self, deviceId):
         return self.doAction(deviceId, BOND_DEVICE_ACTION_TURN_LIGHT_ON)
@@ -100,25 +103,34 @@ class Bond:
     def toggleLight(self, deviceId):
         return self.doAction(deviceId, BOND_DEVICE_ACTION_TOGGLE_LIGHT)
 
+    def startDimmer(self, deviceId):
+        return self.doAction(deviceId, BOND_DEVICE_ACTION_START_DIMMER)
+
+    def startUpLightDimmer(self, deviceId):
+        return self.doAction(deviceId, BOND_DEVICE_ACTION_START_UP_LIGHT_DIMMER)
+
+    def startDownLightDimmer(self, deviceId):
+        return self.doAction(deviceId, BOND_DEVICE_ACTION_START_DOWN_LIGHT_DIMMER)
+
     # Relating to Fireplace (FP)
     def setFlame(self, deviceId, flame=3):
-        return self.doAction(deviceId,
-                             BOND_DEVICE_ACTION_SET_FLAME,
-                             {"argument": flame})
+        return self.doAction(
+            deviceId, BOND_DEVICE_ACTION_SET_FLAME, {"argument": flame}
+        )
 
     def increaseFlame(self, deviceId, flame=1):
-        return self.doAction(deviceId,
-                             BOND_DEVICE_ACTION_INCREASE_FLAME,
-                             {"argument": flame})
+        return self.doAction(
+            deviceId, BOND_DEVICE_ACTION_INCREASE_FLAME, {"argument": flame}
+        )
 
     def decreaseFlame(self, deviceId, flame=1):
-        return self.doAction(deviceId,
-                             BOND_DEVICE_ACTION_DECREASE_FLAME,
-                             {"argument": flame})
+        return self.doAction(
+            deviceId, BOND_DEVICE_ACTION_DECREASE_FLAME, {"argument": flame}
+        )
 
     def doAction(self, deviceId, action, payload={}):
         url = f"http://{self.bondIp}/v2/devices/{deviceId}/actions/{action}"
-        headers = {'BOND-Token': self.bondToken}
+        headers = {"BOND-Token": self.bondToken}
 
         r = requests.put(url, headers=headers, json=payload)
         if r.status_code < 200 or r.status_code > 299:
@@ -127,32 +139,32 @@ class Bond:
 
     def getDeviceIds(self):
         url = f"http://{self.bondIp}/v2/devices"
-        headers = {'BOND-Token': self.bondToken}
+        headers = {"BOND-Token": self.bondToken}
 
         r = requests.get(url, headers=headers)
         devices = []
         for key in r.json():
-            if (key != '_'):
+            if key != "_":
                 devices.append(key)
         return devices
 
     def getDevice(self, deviceId):
         url = f"http://{self.bondIp}/v2/devices/{deviceId}"
-        headers = {'BOND-Token': self.bondToken}
+        headers = {"BOND-Token": self.bondToken}
 
         r = requests.get(url, headers=headers)
         return r.json()
 
     def getProperties(self, deviceId):
         url = f"http://{self.bondIp}/v2/devices/{deviceId}/properties/"
-        headers = {'BOND-Token': self.bondToken}
+        headers = {"BOND-Token": self.bondToken}
 
         r = requests.get(url, headers=headers)
         return r.json()
 
     def getDeviceState(self, deviceId):
         url = f"http://{self.bondIp}/v2/devices/{deviceId}/state"
-        headers = {'BOND-Token': self.bondToken}
+        headers = {"BOND-Token": self.bondToken}
 
         r = requests.get(url, headers=headers)
         return r.json()
