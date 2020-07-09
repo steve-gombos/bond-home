@@ -86,13 +86,13 @@ class Bond:
                              {"argument": brightness})
 
     def startDimmer(self, deviceId):
-        return self.doAction(deviceId, BOND_DEVICE_ACTION_START_DIMMER)
+        return self.doAction(deviceId, Actions.START_DIMMER)
 
     def startUpLightDimmer(self, deviceId):
-        return self.doAction(deviceId, BOND_DEVICE_ACTION_START_UP_LIGHT_DIMMER)
+        return self.doAction(deviceId, Actions.START_UP_LIGHT_DIMMER)
 
     def startDownLightDimmer(self, deviceId):
-        return self.doAction(deviceId, BOND_DEVICE_ACTION_START_DOWN_LIGHT_DIMMER)
+        return self.doAction(deviceId, Actions.START_DOWN_LIGHT_DIMMER)
 
     # Relating to Fireplace (FP)
     def setFlame(self, deviceId, flame=3):
